@@ -5,17 +5,18 @@ class Hardware:
     def __init__(self):
         self.file=open('data.csv','a')
         self.file.write('timestamp  ,   cpu ,   ram ,   disk    ,   network\n')
-        self.dis=0
+        self.net=0
     def tracker(self):
         t=time.ctime(time.time())
         cpu=ps.cpu_percent()
         m=ps.virtual_memory()
         ram=m[2]
         d=ps.swap_memory()
-        disk=d[3]
+        disk=d[2]
         #network=ps.sensors_fans()
-        network=ps.net_io_counters()
-        network=network[1]//(1024*1024)
+        networks=ps.net_io_counters()
+        network=networks[1]//(1024*1024)-self.net
+        self.net=networks[1]//(1024*1024)
         self.file.write(str(t)+"    ,   "+str(cpu)+"   ,    "+str(ram)+"   ,    "+str(disk)+"   ,   "+str(network)+"\n")
     """def writer(self):
         try:
