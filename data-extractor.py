@@ -4,7 +4,7 @@ import time
 class Hardware:
     def __init__(self):
         self.file=open('data.csv','a')
-        self.file.write('timestamp  ,   cpu ,   ram ,   disk    ,   network\n')
+        self.file.write('timestamp,cpu,ram,disk,network\n')
         self.net=0
     def tracker(self):
         t=time.ctime(time.time())
