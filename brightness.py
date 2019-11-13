@@ -17,11 +17,18 @@ def ubu_brightness(brit=10,verbose=False):
     p = subprocess.Popen(["light", "-S", str(brit)])
     if verbose==True:
         print("Brightness changed to",brit,"percent.")
-    
+
+def mac_brightness(brit=10,verbose=False):
+    mac_brit=float(brit)/100
+    p = subprocess.Popen(["brightness", str(mac_brit)]) 
+    if verbose==True:
+        print("Brightness changed to",brit,"percent.")
     
 def brightness(brit=10,verbose=False):
     if platform.system()=='Windows':
         win_brightness(brit,verbose)
+    if platform.system()=='Darwin':
+        mac_brightness(brit,verbose)
     else:
         ubu_brightness(brit,verbose)
 

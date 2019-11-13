@@ -22,8 +22,12 @@
                 <canvas id="network" width="600" height="400"></canvas>
        
         </div>
+
+        
         <script>
+            
             $.getJSON("dynamic_data.json", function (json) {
+                
                 var times = json.map(function(json) {
                     return json.timestamp;
                     
@@ -59,7 +63,7 @@
             ]
             } 
             var cpu = document.getElementById('cpu').getContext('2d');
-            var myChart= new Chart(cpu).Line(cpuData);
+            var cpuChart= new Chart(cpu).Line(cpuData);
 
             
             // RAM
@@ -76,7 +80,7 @@
             ]
             }
             var ram = document.getElementById('ram').getContext('2d');
-            var myChart= new Chart(ram).Line(ramData);
+            var ramChart= new Chart(ram).Line(ramData);
 
 
             // DISK
@@ -93,7 +97,7 @@
             ]
             }
             var disk = document.getElementById('disk').getContext('2d');
-            var myChart= new Chart(disk).Line(diskData);
+            var diskChart= new Chart(disk).Line(diskData);
 
 
             // NETWORKS
@@ -112,7 +116,14 @@
 
             var network = document.getElementById('network').getContext('2d');
             
-            var myChart= new Chart(network).Line(networkData);
+            var networkChart= new Chart(network).Line(networkData);
+
+            function updater(){
+                 cpuChart.update()
+                 ramChart.update()
+                 diskChart.update()
+                 networkChart.update()
+            }
         });
         </script>
     </body>
