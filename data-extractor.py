@@ -1,10 +1,13 @@
 import psutil as ps
 import time
-
+import os
 class Hardware:
     def __init__(self):
-        self.file=open('data.csv','a')
-        self.file.write('timestamp  ,   cpu ,   ram ,   disk    ,   network\n')
+        if os.path.exists('data.csv'):
+            self.file=open('data.csv','a')
+        else:
+            self.file=open('data.csv','w')
+            self.file.write('timestamp,cpu,ram,disk,network\n')
         self.net=0
     def tracker(self):
         t=time.ctime(time.time())
@@ -17,7 +20,7 @@ class Hardware:
         networks=ps.net_io_counters()
         network=networks[1]//(1024*1024)-self.net
         self.net=networks[1]//(1024*1024)
-        self.file.write(str(t)+"    ,   "+str(cpu)+"   ,    "+str(ram)+"   ,    "+str(disk)+"   ,   "+str(network)+"\n")
+        self.file.write(str(t)+","+str(cpu)+","+str(ram)+","+str(disk)+","+str(network)+"\n")
     """def writer(self):
         try:
             thread.start_new_thread(self.tracker())
