@@ -25,7 +25,7 @@ class Hardware:
         self.net=networks[1]-networks[0]
         disk=str(disk)
         
-        self.frame.append([t,cpu,float(ram[1:]),float(disk[5:]),float(network)])
+        self.frame.append([t,float(cpu),float(ram[1:]),float(disk[5:]),float(network)])
         ddf=pd.DataFrame(self.frame)
         ddf.columns=['timestamp','cpu','ram','disk','network']
         ddf.to_json('dynamic_data.json',orient='records')

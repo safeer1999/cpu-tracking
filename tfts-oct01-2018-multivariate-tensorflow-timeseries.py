@@ -73,9 +73,9 @@ def multiple_timeseries_forecast(
       periodicities=[], num_features=4)
 
   df = get_data(data_name)
-  print("\n\n\n--------------------------",df.iloc[:,0].values,"\n\n",df.iloc[:,2:].values,"\n------------------------------\n\n\n")
+  #print("\n\n\n--------------------------",df.iloc[:,0].values,"\n\n",numpy.asarray(df.iloc[:,2:].values,dtype='float32'),"\n------------------------------\n\n\n")
 
-  data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: df.iloc[:,2:].values}
+  data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: numpy.asarray(numpy.asarray(df.iloc[:,1:].values,dtype='float32'),dtype='int32')}
   np_reader = tf.contrib.timeseries.NumpyReader(data)
 
 
