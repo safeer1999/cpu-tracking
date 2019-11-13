@@ -52,8 +52,17 @@ def bound_forecasts_between_0_and_100(ndarray):
   '''I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)'''
   return numpy.clip(ndarray, 0, 100)
 
+def upload_data(num_sample=100,data_name) :
+
+  #collect data from system
+  collection.write(data_name,util_df)
+
+
+def get_data(data_name) :
+  return collection.item(data_name).to_pandas()
+
 def multiple_timeseries_forecast(
-    csv_file_name=_CSV_FILE, export_directory=None, training_steps=500):
+    data=df, export_directory=None, training_steps=500):
   '''Trains and evaluates a tensorflow model for simultaneously forecasting multiple time series.'''
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
