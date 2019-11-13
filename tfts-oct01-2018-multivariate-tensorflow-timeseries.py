@@ -37,6 +37,7 @@ import tensorflow as tf
 import pandas as pd
 import pandas 
 import pystore
+from data_extractor import Hardware
 
 pystore.set_path('./data')
 store = pystore.store('testdatastore')
@@ -52,20 +53,26 @@ def bound_forecasts_between_0_and_100(ndarray):
   '''I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)'''
   return numpy.clip(ndarray, 0, 100)
 
-def upload_data(num_sample=100,data_name) :
+def upload_data(data_name,num_sample=100) :
 
-  #collect data from system
-  collection.write(data_name,util_df)
+  util = Hardware()
+  util_df = util.helper(save=0)
+  util_df.insert(0,'time',util_df.index,True)
+  #print(util_df.head())
+  collection.write(data_name,util_df,metadata={'Source': data_name},overwrite=True)
 
 
 def get_data(data_name) :
   return collection.item(data_name).to_pandas()
 
 def multiple_timeseries_forecast(
-    data=df, export_directory=None, training_steps=500):
+    data_name='CPU-Util', export_directory=None, training_steps=500):
   '''Trains and evaluates a tensorflow model for simultaneously forecasting multiple time series.'''
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
+
+  df = get_data(data_name)
+  #print("\n\n\n--------------------------",df.shape,"\n------------------------------\n\n\n")
 
   data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: df.iloc[:,1:].values}
   np_reader = tf.contrib.timeseries.NumpyReader(data)
@@ -122,8 +129,11 @@ def multiple_timeseries_forecast(
 
 
 def main(unused_argv):
+
+  upload_data('CPU-Util1')
+
   startTime = time.time()
-  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast()
+  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util1')
   endTime = time.time()
 
   print('len(past_and_future_timesteps)', len(past_and_future_timesteps))
