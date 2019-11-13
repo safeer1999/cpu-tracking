@@ -35,7 +35,7 @@ def checkSubarraySum(arr, n, k):
 
 
 def main():
-    arr = [1,2,3,2,1,66,5,4,3,2,4,2,1,3,4,56,7,65,5,6,4,6]
+    arr = [1,20,38,34,98,66,5,4,3,2,4,2,1,3,4,56,7,65,5,6,4,6]
     k = len(arr)//3
     n = len(arr) 
     ranges=(checkSubarraySum(arr, n, k))     
@@ -43,9 +43,9 @@ def main():
         print(arr[i])
         time.sleep(1)
         if i==ranges[0]:
-            brightness(100,verbose=True)
-        elif i==ranges[1]:
             brightness(10,verbose=True)
+        elif i==ranges[1]:
+            brightness(50,verbose=True)
 
 if __name__ == "__main__":
     main()
