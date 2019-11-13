@@ -1,26 +1,4 @@
-'''
-Dated: Oct01-2018
-Author: Mahesh Babu Mariappan (https://www.linkedin.com/in/mahesh-babu-mariappan)
-Source code for simultaneously forecasting multiple time series taking into account their correlations.
-Dataset used: systemresources-deeplearning-1000.csv
-Columns:
-index (timesteps)
-cpu     (utilization)
-ram     (utilization)
-disk      (utilization)
-network     (utilization)
 
-
-I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)
-
-Warning: program may consume a lot of cpu and ram.
-
-Results:
-If you have matplotlib installed, you should see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.
-Time elapsed on an intel core i5 4-core cpu, 8gb ram: 00h:01m:18.26s
-
-
-'''
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -32,8 +10,7 @@ import numpy
 import time
 from os import path
 import tempfile
-#import tensorflow.compat.v1 as tf
-#tf.disable_v2_behavior()
+
 import tensorflow as tf
 import pandas as pd
 import pandas
@@ -51,7 +28,7 @@ _CSV_FILE = path.join(_PATH, 'test-dataset.csv')
 
 
 def bound_forecasts_between_0_and_100(ndarray):
-  '''I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)'''
+  
   return numpy.clip(ndarray, 0, 100)
 
 def upload_data(data_name,num_sample=100) :
@@ -59,7 +36,7 @@ def upload_data(data_name,num_sample=100) :
   util = Hardware()
   util_df = util.helper(12,save=0)
   util_df.insert(0,'time',util_df.index,True)
-  #print(util_df.head())
+
   collection.write(data_name,util_df,metadata={'Source': data_name},overwrite=True)
 
 
@@ -68,22 +45,18 @@ def get_data(data_name) :
 
 def multiple_timeseries_forecast(
     data_name='CPU-Util', export_directory=None, training_steps=500):
-  '''Trains and evaluates a tensorflow model for simultaneously forecasting multiple time series.'''
+  
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
 
   df = get_data(data_name)
-  #print("\n\n\n--------------------------",df.iloc[:,0].values,"\n\n",numpy.asarray(df.iloc[:,2:].values,dtype='float32'),"\n------------------------------\n\n\n")
+  
 
   data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: numpy.asarray(numpy.asarray(df.iloc[:,1:].values,dtype='float32'),dtype='int32')}
   np_reader = tf.contrib.timeseries.NumpyReader(data)
 
 
-  # reader = tf.contrib.timeseries.CSVReader(
-  #     csv_file_name,
-  #     skip_header_lines=1,
-  #     column_names=((tf.contrib.timeseries.TrainEvalFeatures.TIMES,)
-  #                   + (tf.contrib.timeseries.TrainEvalFeatures.VALUES,) * 4))
+
   train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(
   np_reader, batch_size=4, window_size=10)
 
@@ -131,7 +104,6 @@ def multiple_timeseries_forecast(
 
 def main(unused_argv):
 
-  #upload_data('CPU-Util1')
 
   startTime = time.time()
   past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util')
@@ -139,12 +111,7 @@ def main(unused_argv):
 
   print('len(past_and_future_timesteps)', len(past_and_future_timesteps))
   print('len(past_and_future_values)', len(past_and_future_values))
-  #print('type(past_and_future_timesteps)', type(past_and_future_timesteps))    #<class 'numpy.ndarray'>
-  #print('type(past_and_future_values)', type(past_and_future_values))      #<class 'numpy.ndarray'>
-  #print('past_and_future_timesteps.shape', past_and_future_timesteps.shape)
-  #print('past_and_future_values.shape', past_and_future_values.shape)
 
-  #print('past_and_future_timesteps[995:1005]:', past_and_future_timesteps[995:1005])
 
   print('\n##### first 1000 samples #####')
   print('min value:', numpy.amin(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmin(), past_and_future_values[:999].shape))    #returns
@@ -162,22 +129,21 @@ def main(unused_argv):
 
   print('Now bounding forecasts between 0 and 100 since this is a system resource utilization problem.')
 
-  #bound forecasts between 0 and 100
+
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
   print('Done! If you have matplotlib installed, you should now see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
-  # Show where sampling starts on the plot
+
   plt.axvline(1000, linestyle="dotted")
   plt.plot(past_and_future_timesteps, past_and_future_values)
   plt.title('Simultaneous forecast of multiple time series features')
   plt.xlabel("Timesteps")
   plt.ylabel("Units")
-  #handles, labels = ax.get_legend_handles_labels()
-  #ax.legend(handles, labels)
+
   plt.show()
   activate(past_and_future_values[900:,0])
 
-  #print elapsed time in hh:mm:ss format
+
   hours, rem = divmod(endTime-startTime, 3600)
   minutes, seconds = divmod(rem, 60)
   print("Time elapsed: {:0>2}h:{:0>2}m:{:05.2f}s".format(int(hours),int(minutes),seconds))
@@ -187,6 +153,6 @@ def main(unused_argv):
 
 if __name__ == "__main__":
   print(tf.__version__)
-  #print(tf.contrib.timeseries.TrainEvalFeatures.TIMES,tf.contrib.timeseries.TrainEvalFeatures.VALUES)
+ 
   tf.compat.v1.app.run(main=None,argv=None)
-  #tf.app.run(main=main)
+

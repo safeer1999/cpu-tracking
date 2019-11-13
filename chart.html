@@ -21,6 +21,7 @@
                 <canvas id="network" width="600" height="400"></canvas>
        
         </div>
+        <!-- <input type="button" value="Update" onclick=updater()> -->
 
         
         <script>
@@ -118,10 +119,43 @@
             var networkChart= new Chart(network).Line(networkData);
 
             function updater(){
-                 cpuChart.update()
-                 ramChart.update()
-                 diskChart.update()
-                 networkChart.update()
+                $.getJSON("dynamic_data.json", function (json) {
+                var times = json.map(function(json) {
+                    return json.timestamp;
+                    
+                });
+                var cpus = json.map(function(json) {
+                    return json.cpu;
+                    
+                });
+                var rams = json.map(function(json) {
+                    return json.ram;
+                    
+                });
+                var disks = json.map(function(json) {
+                    return json.disk;
+                    
+                });
+                var networks = json.map(function(json) {
+                    return json.network;
+                    
+                });
+
+                cpuChart.cpuData.datasets.data=cpus;
+                ramChart.ramData.datasets.data=rams;
+                diskChart.diskData.datasets.data=disks;
+                networkChart.networkData.datasets.data=networks;
+
+                cpuChart.cpuData.labels=times;
+                ramChart.ramData.labels=times;
+                diskChart.diskData.labels=times;
+                networkChart.networkData.labels=times;
+
+                cpuChart.update();
+                ramChart.update();
+                diskChart.update();
+                networkChart.update();
+                });
             }
         });
         </script>
