@@ -10,9 +10,9 @@ class Hardware:
         t=time.ctime(time.time())
         cpu=ps.cpu_percent()
         m=ps.virtual_memory()
-        ram=((m[0]-m[1])/m[0])*100
-        d=ps.disk_io_counters()
-        disk=(d[2]/d[4])/100
+        ram=m[2]
+        d=ps.swap_memory()
+        disk=d[3]
         #network=ps.sensors_fans()
         network=ps.net_io_counters()
         network=network[1]//(1024*1024)
