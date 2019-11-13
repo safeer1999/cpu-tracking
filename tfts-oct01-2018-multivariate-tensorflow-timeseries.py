@@ -24,6 +24,7 @@ Time elapsed on an intel core i5 4-core cpu, 8gb ram: 00h:01m:18.26s
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from activator import activate
 
 import matplotlib
 from matplotlib import pyplot as plt
@@ -164,7 +165,7 @@ def main(unused_argv):
 
   #bound forecasts between 0 and 100
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
-
+  activate(past_and_future_values[900:])
   print('Done! If you have matplotlib installed, you should now see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
   # Show where sampling starts on the plot

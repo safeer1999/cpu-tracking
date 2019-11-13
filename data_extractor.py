@@ -27,6 +27,7 @@ class Hardware:
         
         self.frame.append([t,cpu,float(ram[1:]),float(disk[5:]),float(network)])
         ddf=pd.DataFrame(self.frame)
+        ddf.columns=['timestamp','cpu','ram','disk','network']
         ddf.to_json('dynamic_data.json',orient='records')
 
     def helper(self,iters,save=1):
