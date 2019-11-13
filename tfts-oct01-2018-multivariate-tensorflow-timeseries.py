@@ -164,7 +164,6 @@ def main(unused_argv):
 
   #bound forecasts between 0 and 100
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
-  activate(past_and_future_values[900:])
   print('Done! If you have matplotlib installed, you should now see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
   # Show where sampling starts on the plot
@@ -176,6 +175,7 @@ def main(unused_argv):
   #handles, labels = ax.get_legend_handles_labels()
   #ax.legend(handles, labels)
   plt.show()
+  activate(past_and_future_values[900:,0])
 
   #print elapsed time in hh:mm:ss format
   hours, rem = divmod(endTime-startTime, 3600)
