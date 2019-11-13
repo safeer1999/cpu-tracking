@@ -8,12 +8,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     </head>
     <body>
-        <!-- line chart canvas element -->
+
         <canvas id="cpu" width="600" height="400"></canvas>
        
-        <!-- <canvas id="countries" width="600" height="400"></canvas>
-       
-        <canvas id="income" width="600" height="400"></canvas> -->
+
         <script>
             $.getJSON("safe_data.json", function (json) {
                 var times = json.map(function(json) {
@@ -42,7 +40,6 @@
             
             // get line chart canvas
             var cpu = document.getElementById('cpu').getContext('2d');
-            // draw line chart
             
             var myChart= new Chart(cpu).Line(cpuData);
         });
