@@ -23,7 +23,7 @@ class Hardware:
         disk=str(disk)
         self.frame.append([str(t),str(cpu),ram[1:],disk[5:],network])
 
-    def helper(self,save=1):
+    def helper(self,save=1,iters):
         start=time.time()
         #save=int(input("want a CSV or not?\n"))
         count=0
@@ -34,7 +34,7 @@ class Hardware:
                 self.tracker(save)
                 print("*")
                 start=time.time()
-            if(count>=20):
+            if(count>=iters):
                 break
         #print(pd.DataFrame(self.frame))
         if(save==1):
@@ -46,7 +46,7 @@ class Hardware:
 def main():
 
     obj=Hardware()
-    obj.helper()
+    obj.helper(20)
     #call dataFrameGenerator() function to get pandas dataframe object
 if __name__ == '__main__':
     main()
