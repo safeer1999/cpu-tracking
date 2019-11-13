@@ -4,7 +4,6 @@ import os
 class Hardware:
     def __init__(self):
         if os.path.exists('data.csv'):
-            print('exists')
             self.file=open('data.csv','a')
         else:
             self.file=open('data.csv','w')
