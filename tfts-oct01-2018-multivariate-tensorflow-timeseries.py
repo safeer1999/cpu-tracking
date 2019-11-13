@@ -35,10 +35,18 @@ import tempfile
 #tf.disable_v2_behavior()
 import tensorflow as tf
 import pandas as pd
+import pandas 
+import pystore
 
+pystore.set_path('./data')
+store = pystore.store('testdatastore')
+collection = store.collection('sample.EOD')
+df = collection.item('CPU-Util').to_pandas()
 
 _PATH = path.dirname(__file__)
 _CSV_FILE = path.join(_PATH, 'test-dataset.csv')
+
+
 
 def bound_forecasts_between_0_and_100(ndarray):
   '''I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)'''
@@ -50,22 +58,21 @@ def multiple_timeseries_forecast(
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
 
-  df = pd.read_csv(_CSV_FILE,index_col=False)
   data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: df.iloc[:,1:].values}
   np_reader = tf.contrib.timeseries.NumpyReader(data)
 
 
-
-  reader = tf.contrib.timeseries.CSVReader(
-      csv_file_name,
-      skip_header_lines=1,
-      column_names=((tf.contrib.timeseries.TrainEvalFeatures.TIMES,)
-                    + (tf.contrib.timeseries.TrainEvalFeatures.VALUES,) * 4))
+  # reader = tf.contrib.timeseries.CSVReader(
+  #     csv_file_name,
+  #     skip_header_lines=1,
+  #     column_names=((tf.contrib.timeseries.TrainEvalFeatures.TIMES,)
+  #                   + (tf.contrib.timeseries.TrainEvalFeatures.VALUES,) * 4))
   train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(
-      np_reader, batch_size=4, window_size=64)
+  np_reader, batch_size=4, window_size=64)
+
   print("\n\ntrain_input_fn: ",train_input_fn,"\n\n")
   estimator.train(input_fn=train_input_fn, steps=training_steps)
-  evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(reader)
+  evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(np_reader)
   current_state = estimator.evaluate(input_fn=evaluation_input_fn, steps=1)
   values = [current_state["observed"]]
   times = [current_state[tf.contrib.timeseries.FilteringResults.TIMES]]
