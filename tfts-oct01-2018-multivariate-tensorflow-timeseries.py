@@ -6,8 +6,8 @@ Dataset used: systemresources-deeplearning-1000.csv
 Columns:
 index (timesteps)
 cpu     (utilization)
-ram     (utilization) 
-disk      (utilization) 
+ram     (utilization)
+disk      (utilization)
 network     (utilization)
 
 
@@ -16,7 +16,7 @@ I am bounding the forecasts between 0 and 100 (because we are looking at forecas
 Warning: program may consume a lot of cpu and ram.
 
 Results:
-If you have matplotlib installed, you should see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features. 
+If you have matplotlib installed, you should see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.
 Time elapsed on an intel core i5 4-core cpu, 8gb ram: 00h:01m:18.26s
 
 
@@ -35,7 +35,7 @@ import tempfile
 #tf.disable_v2_behavior()
 import tensorflow as tf
 import pandas as pd
-import pandas 
+import pandas
 import pystore
 from data_extractor import Hardware
 
@@ -98,7 +98,7 @@ def multiple_timeseries_forecast(
   export_location = estimator.export_savedmodel(
       export_directory, input_receiver_fn)
   with tf.Graph().as_default():
-    numpy.random.seed(1)  
+    numpy.random.seed(1)
     with tf.Session() as session:
       signatures = tf.saved_model.loader.load(
           session, [tf.saved_model.tag_constants.SERVING], export_location)
@@ -130,10 +130,10 @@ def multiple_timeseries_forecast(
 
 def main(unused_argv):
 
-  upload_data('CPU-Util1')
+  #upload_data('CPU-Util1')
 
   startTime = time.time()
-  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util1')
+  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util')
   endTime = time.time()
 
   print('len(past_and_future_timesteps)', len(past_and_future_timesteps))
@@ -144,29 +144,29 @@ def main(unused_argv):
   #print('past_and_future_values.shape', past_and_future_values.shape)
 
   #print('past_and_future_timesteps[995:1005]:', past_and_future_timesteps[995:1005])
-  
+
 
   print('\n##### first 1000 samples #####')
-  print('min value:', numpy.amin(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmin(), past_and_future_values[:999].shape))    #returns 
-  print('max value:', numpy.amax(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmax(), past_and_future_values[:999].shape))    #returns 
+  print('min value:', numpy.amin(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmin(), past_and_future_values[:999].shape))    #returns
+  print('max value:', numpy.amax(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmax(), past_and_future_values[:999].shape))    #returns
 
   print('\n##### 100 future forecast samples #####')
 
-  print('min value:', numpy.amin(past_and_future_values[999:]), 'at ', numpy.unravel_index(past_and_future_values[999:].argmin(), past_and_future_values[999:].shape))    #returns 
+  print('min value:', numpy.amin(past_and_future_values[999:]), 'at ', numpy.unravel_index(past_and_future_values[999:].argmin(), past_and_future_values[999:].shape))    #returns
 
-  print('max value:', numpy.amax(past_and_future_values[999:]), 'at ', numpy.unravel_index(past_and_future_values[999:].argmax(), past_and_future_values[999:].shape))    #returns 
+  print('max value:', numpy.amax(past_and_future_values[999:]), 'at ', numpy.unravel_index(past_and_future_values[999:].argmax(), past_and_future_values[999:].shape))    #returns
 
   print('past_and_future_values[999:].shape:', past_and_future_values[999:].shape)
 
   print('\nAll future 100 forecast values:\n', past_and_future_values[999:])
 
   print('Now bounding forecasts between 0 and 100 since this is a system resource utilization problem.')
-  
+
   #bound forecasts between 0 and 100
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
 
   print('Done! If you have matplotlib installed, you should now see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
-  
+
   # Show where sampling starts on the plot
   plt.axvline(1000, linestyle="dotted")
   plt.plot(past_and_future_timesteps, past_and_future_values)
@@ -190,4 +190,3 @@ if __name__ == "__main__":
   #print(tf.contrib.timeseries.TrainEvalFeatures.TIMES,tf.contrib.timeseries.TrainEvalFeatures.VALUES)
   tf.compat.v1.app.run(main=None,argv=None)
   #tf.app.run(main=main)
-
