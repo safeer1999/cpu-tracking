@@ -34,8 +34,9 @@ def checkSubarraySum(arr, n, k):
 # Driver code  
 
 
-def main():
-    arr = [1,20,38,34,98,66,5,4,3,2,4,2,1,3,4,56,7,65,5,6,4,6]
+def activate(arr=None):
+    if arr==None:
+        arr = [1,20,38,34,98,66,5,4,3,2,4,2,1,3,4,56,7,65,5,6,4,6]
     k = len(arr)//3
     n = len(arr) 
     ranges=(checkSubarraySum(arr, n, k))     
@@ -46,6 +47,9 @@ def main():
             brightness(10,verbose=True)
         elif i==ranges[1]:
             brightness(50,verbose=True)
+
+def main():
+    activate()
 
 if __name__ == "__main__":
     main()
