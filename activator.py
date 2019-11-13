@@ -43,9 +43,9 @@ def activate(arr):
         print(arr[i])
         time.sleep(1)
         if i==ranges[0]:
-            brightness(10,verbose=True)
+            brightness(100,verbose=True)
         elif i==ranges[1]:
-            brightness(50,verbose=True)
+            brightness(10,verbose=True)
 
 def main():
     activate()
