@@ -57,7 +57,7 @@ def bound_forecasts_between_0_and_100(ndarray):
 def upload_data(data_name,num_sample=100) :
 
   util = Hardware()
-  util_df = util.helper(save=0)
+  util_df = util.helper(12,save=0)
   util_df.insert(0,'time',util_df.index,True)
   #print(util_df.head())
   collection.write(data_name,util_df,metadata={'Source': data_name},overwrite=True)
@@ -73,9 +73,9 @@ def multiple_timeseries_forecast(
       periodicities=[], num_features=4)
 
   df = get_data(data_name)
-  #print("\n\n\n--------------------------",df.shape,"\n------------------------------\n\n\n")
+  print("\n\n\n--------------------------",df.iloc[:,0].values,"\n\n",df.iloc[:,2:].values,"\n------------------------------\n\n\n")
 
-  data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: df.iloc[:,1:].values}
+  data = {tf.contrib.timeseries.TrainEvalFeatures.TIMES: df.iloc[:,0].values,tf.contrib.timeseries.TrainEvalFeatures.VALUES: df.iloc[:,2:].values}
   np_reader = tf.contrib.timeseries.NumpyReader(data)
 
 
@@ -85,7 +85,7 @@ def multiple_timeseries_forecast(
   #     column_names=((tf.contrib.timeseries.TrainEvalFeatures.TIMES,)
   #                   + (tf.contrib.timeseries.TrainEvalFeatures.VALUES,) * 4))
   train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(
-  np_reader, batch_size=4, window_size=64)
+  np_reader, batch_size=4, window_size=10)
 
   print("\n\ntrain_input_fn: ",train_input_fn,"\n\n")
   estimator.train(input_fn=train_input_fn, steps=training_steps)
@@ -145,7 +145,6 @@ def main(unused_argv):
   #print('past_and_future_values.shape', past_and_future_values.shape)
 
   #print('past_and_future_timesteps[995:1005]:', past_and_future_timesteps[995:1005])
-
 
   print('\n##### first 1000 samples #####')
   print('min value:', numpy.amin(past_and_future_values[:999]), 'at ', numpy.unravel_index(past_and_future_values[:999].argmin(), past_and_future_values[:999].shape))    #returns

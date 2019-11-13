@@ -51,7 +51,7 @@ class Hardware:
             df.to_csv('data.csv')
             df.to_json('data.json',orient='records')
 
-        return pd.DataFrame(self.frame)
+        return pd.DataFrame(self.frame,columns=['timestamp','cpu','ram','disk','network'])
 
 
 
