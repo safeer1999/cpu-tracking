@@ -1,6 +1,8 @@
 import psutil as ps
 import time
 import pandas as pd
+import os
+
 class Hardware:
     def __init__(self):
         #self.net=ps.net_io_counters()[1]-ps.net_io_counters()[0]
@@ -21,9 +23,10 @@ class Hardware:
         network=network[len(network)-2:]
         self.net=networks[1]-networks[0]
         disk=str(disk)
+        
         self.frame.append([str(t),str(cpu),ram[1:],disk[5:],network])
 
-    def helper(self,save=1,iters):
+    def helper(self,iters,save=1):
         start=time.time()
         #save=int(input("want a CSV or not?\n"))
         count=0
@@ -38,7 +41,12 @@ class Hardware:
                 break
         #print(pd.DataFrame(self.frame))
         if(save==1):
-            pd.DataFrame(self.frame).to_csv('data.csv')
+            df=pd.DataFrame(self.frame)
+            df.columns=['timestamp','cpu','ram','disk','network']
+            df['timestamp']=pd.to_datetime(df['timestamp'])
+            df.to_csv('data.csv')
+            df.to_json('data.json',orient='records')
+
         return pd.DataFrame(self.frame)
 
 
