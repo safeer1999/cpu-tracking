@@ -7,6 +7,7 @@ class Hardware:
     def __init__(self):
         #self.net=ps.net_io_counters()[1]-ps.net_io_counters()[0]
         self.frame=[]
+        
         #self.file.write('timestamp  ,   cpu ,   ram ,   disk    ,   network\n')
     def tracker(self,save):
         t=time.ctime(time.time())
@@ -25,6 +26,8 @@ class Hardware:
         disk=str(disk)
         
         self.frame.append([str(t),str(cpu),ram[1:],disk[5:],network])
+        ddf=pd.DataFrame(self.frame)
+        ddf.to_json('dynamic-data.json',orient='records')
 
     def helper(self,iters,save=1):
         start=time.time()
