@@ -10,13 +10,13 @@ def win_brightness(brit=10,verbose=False):
     p = subprocess.Popen(["powercfg", "-SetDcValueIndex",powers[0],powers[1],powers[2],str(brit)])
     p = subprocess.Popen(["powercfg", "-S", powers[0]])
     if verbose==True:
-        print("Brightness reduced to",brit,"percent.")
+        print("Brightness changed to",brit,"percent.")
     
 
 def ubu_brightness(brit=10,verbose=False):
     p = subprocess.Popen(["light", "-S", str(brit)])
     if verbose==True:
-        print("Brightness reduced to",brit,"percent.")
+        print("Brightness changed to",brit,"percent.")
     
     
 def brightness(brit=10,verbose=False):
