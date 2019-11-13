@@ -14,7 +14,7 @@ def win_brightness(brit=10,verbose=False):
     
 
 def ubu_brightness(brit=10,verbose=False):
-    p = subprocess.Popen(["xbacklight", "-set", brit])
+    p = subprocess.Popen(["light", "-S", str(brit)])
     if verbose==True:
         print("Brightness reduced to",brit,"percent.")
     
