@@ -44,7 +44,7 @@ collection = store.collection('sample.EOD')
 df = collection.item('CPU-Util').to_pandas()
 
 _PATH = path.dirname(__file__)
-_CSV_FILE = path.join(_PATH, 'systemresources-deeplearning-1000.csv')
+_CSV_FILE = path.join(_PATH, 'test-dataset.csv')
 
 
 
