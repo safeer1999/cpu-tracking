@@ -1,0 +1,3 @@
+Power Scheme GUID: 1d77c431-8167-48c8-aca3-0d1260bfdf2b  (Extended Battery Life (Max run-time).)
+  Subgroup GUID: 7516b95f-f776-4464-8c53-06167f40cc99  (Display)
+    Power Setting GUID: aded5e82-b909-4619-9949-f5d71dac0bcb  (Display brightness)
