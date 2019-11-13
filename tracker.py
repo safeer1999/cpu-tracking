@@ -1,26 +1,4 @@
-'''
-Dated: Oct01-2018
-Author: Mahesh Babu Mariappan (https://www.linkedin.com/in/mahesh-babu-mariappan)
-Source code for simultaneously forecasting multiple time series taking into account their correlations.
-Dataset used: systemresources-deeplearning-1000.csv
-Columns:
-index (timesteps)
-cpu     (utilization)
-ram     (utilization)
-disk      (utilization)
-network     (utilization)
 
-
-I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)
-
-Warning: program may consume a lot of cpu and ram.
-
-Results:
-If you have matplotlib installed, you should see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.
-Time elapsed on an intel core i5 4-core cpu, 8gb ram: 00h:01m:18.26s
-
-
-'''
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -51,7 +29,7 @@ _CSV_FILE = path.join(_PATH, 'test-dataset.csv')
 
 
 def bound_forecasts_between_0_and_100(ndarray):
-  '''I am bounding the forecasts between 0 and 100 (because we are looking at forecasting resource utilization in terms of percentages)'''
+
   return numpy.clip(ndarray, 0, 100)
 
 def upload_data(data_name,num_sample=100) :
@@ -68,7 +46,7 @@ def get_data(data_name) :
 
 def multiple_timeseries_forecast(
     data_name='CPU-Util', export_directory=None, training_steps=500):
-  '''Trains and evaluates a tensorflow model for simultaneously forecasting multiple time series.'''
+
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
 
@@ -164,7 +142,7 @@ def main(unused_argv):
 
   #bound forecasts between 0 and 100
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
-  print('Done! If you have matplotlib installed, you should now see a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
+  print('Done! Now displaying a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
   # Show where sampling starts on the plot
   plt.axvline(1000, linestyle="dotted")
