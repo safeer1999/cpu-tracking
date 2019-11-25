@@ -1,28 +1,24 @@
 from brightness import brightness
 import time
-# Python3 program to check if any 
-# Subarray of size K has a given Sum  
   
-# Function to check if any Subarray  
-# of size K has a given Sum  
-def checkSubarraySum(arr, n, k): 
-    # Check for first window  
+def checkSubarraySum(arr, n, k):
+    # Check for first window
     curr_sum = 0
     final_sum=0
     start=0
     end=0
-    for i in range(0, k):  
-        curr_sum += arr[i]  
-    if (curr_sum > final_sum):  
+    for i in range(0, k):
+        curr_sum += arr[i]
+    if (curr_sum > final_sum):
         final_sum=curr_sum
         start=0
         end=k
-  
-    # Consider remaining blocks  
-    # ending with j  
-    for j in range(k, n):  
-        curr_sum = (curr_sum + arr[j] - arr[j - k])  
-        if (curr_sum > final_sum) : 
+
+    # Consider remaining blocks
+    # ending with j
+    for j in range(k, n):
+        curr_sum = (curr_sum + arr[j] - arr[j - k])
+        if (curr_sum > final_sum) :
             final_sum=curr_sum
             start=j-k+1
             end=j
@@ -30,15 +26,15 @@ def checkSubarraySum(arr, n, k):
     # print(end)
     return [start,end]
     # return final_sum
-  
-# Driver code  
+
+# Driver code
 
 
 def activate(arr):
 
     k = len(arr)//3
-    n = len(arr) 
-    ranges=(checkSubarraySum(arr, n, k))     
+    n = len(arr)
+    ranges=(checkSubarraySum(arr, n, k))
     for i in range(len(arr)):
         print(arr[i])
         time.sleep(1)
@@ -52,5 +48,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-        
