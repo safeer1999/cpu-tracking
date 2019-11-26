@@ -40,6 +40,17 @@ font-family: 'Open Sans Condensed', sans-serif;
 
 
   </style>
+<script type="text/javascript">
+  $.ajax({
+  type: "POST",
+  url: "~/tracker.py",
+  data: { param: text}
+}).done(function( o ) {
+   // do something
+});
+</script>
+
+
   <body>
     <div >
       <h1>CPU tracker</h1>
