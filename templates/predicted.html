@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <!-- <meta http-equiv="refresh" content="5"/> -->
         <title>Usage statistics</title>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -28,6 +29,8 @@
        
         </div>
         <!-- <input type="button" value="Update" onclick=updater();> -->
+        
+
 
         
         <script type="text/javascript">
@@ -66,8 +69,7 @@
                         pointColor : "#fff",
                         pointStrokeColor : "#9DB86D",
                         data : cpus
-                    }
-                ]
+                    }],                
                 } 
                 var cpu = document.getElementById('cpu').getContext('2d');
                 var cpuChart= new Chart(cpu).Line(cpuData);
