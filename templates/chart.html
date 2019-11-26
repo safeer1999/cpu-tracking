@@ -11,7 +11,7 @@
     <body>
         <div class='top-bar'>
             
-            <div class='top-title' style='font-size: 40px'>Predicted Usage</div>
+            <div class='top-title' style='font-size: 40px'>Actual Usage</div>
 
         </div>
         <div class='graphs' style="font-family: 'Questrial', sans-serif; font-size: 25px">
@@ -27,7 +27,9 @@
                 <canvas id="network" width="600" height="400"></canvas>
        
         </div>
-        <!-- <input type="button" value="Update" onclick=updater()> -->
+
+        <button value="Refresh Page" onClick="window.location.reload();">Reload</button>   
+
 
         
         <script type="text/javascript">
@@ -125,50 +127,51 @@
                 
                 var networkChart= new Chart(network).Line(networkData);
                 // updater();
-                setTimeout(function(){
-                    $.getJSON("dynamic_data.json", function (json) {
-                    var times = json.map(function(json) {
-                        return json.timestamp;
+                // setTimeout(function(){
+                //     $.getJSON("dynamic_data.json", function (json) {
+                //     var times = json.map(function(json) {
+                //         return json.timestamp;
                         
-                    });
-                    var cpus = json.map(function(json) {
-                        return json.cpu;
+                //     });
+                //     var cpus = json.map(function(json) {
+                //         return json.cpu;
                         
-                    });
-                    var rams = json.map(function(json) {
-                        return json.ram;
+                //     });
+                //     var rams = json.map(function(json) {
+                //         return json.ram;
                         
-                    });
-                    var disks = json.map(function(json) {
-                        return json.disk;
+                //     });
+                //     var disks = json.map(function(json) {
+                //         return json.disk;
                         
-                    });
-                    var networks = json.map(function(json) {
-                        return json.network;
+                //     });
+                //     var networks = json.map(function(json) {
+                //         return json.network;
                         
-                    });
+                //     });
 
-                    cpuChart.cpuData.datasets.data=cpus;
-                    ramChart.ramData.datasets.data=rams;
-                    diskChart.diskData.datasets.data=disks;
-                    networkChart.networkData.datasets.data=networks;
+                //     cpuChart.cpuData.datasets.data=cpus;
+                //     ramChart.ramData.datasets.data=rams;
+                //     diskChart.diskData.datasets.data=disks;
+                //     networkChart.networkData.datasets.data=networks;
 
-                    cpuChart.cpuData.labels=times;
-                    ramChart.ramData.labels=times;
-                    diskChart.diskData.labels=times;
-                    networkChart.networkData.labels=times;
+                //     cpuChart.cpuData.labels=times;
+                //     ramChart.ramData.labels=times;
+                //     diskChart.diskData.labels=times;
+                //     networkChart.networkData.labels=times;
 
-                    cpuChart.update();
-                    ramChart.update();
-                    diskChart.update();
-                    networkChart.update();
-                    });
-                }, 1000);
+                //     cpuChart.update();
+                //     ramChart.update();
+                //     diskChart.update();
+                //     networkChart.update();
+                //     });
+                // }, 1000);
 
 
                 });
                 
                 var updater = function() {
+
                     $.getJSON("../dynamic_data.json", function (json) {
                     var times = json.map(function(json) {
                         return json.timestamp;
@@ -200,7 +203,7 @@
                     ramChart.ramData.labels=times;
                     diskChart.diskData.labels=times;
                     networkChart.networkData.labels=times;
-
+                    console.log('here')
                     cpuChart.update();
                     ramChart.update();
                     diskChart.update();
@@ -209,6 +212,8 @@
 
                     });
                 }
+
+
             }
        
         </script>
