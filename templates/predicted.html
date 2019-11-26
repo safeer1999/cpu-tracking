@@ -27,13 +27,13 @@
                 <canvas id="network" width="600" height="400"></canvas>
        
         </div>
-        <!-- <input type="button" value="Update" onclick=updater()> -->
+        <!-- <input type="button" value="Update" onclick=updater();> -->
 
         
         <script type="text/javascript">
             
             window.onload = function() {
-                $.getJSON("../timeseries-output.json", function (json) {
+                $.getJSON("../timeseries-output5.json", function (json) {
                     
                     var times = json.map(function(json) {
                         return json.timestamp;
@@ -126,7 +126,7 @@
                 var networkChart= new Chart(network).Line(networkData);
                 // updater();
                 setTimeout(function(){
-                    $.getJSON("timeseries-output.json", function (json) {
+                    $.getJSON("timeseries-output5.json", function (json) {
                     var times = json.map(function(json) {
                         return json.timestamp;
                         
@@ -169,7 +169,7 @@
                 });
                 
                 var updater = function() {
-                    $.getJSON("../timeseries-output.json", function (json) {
+                    $.getJSON("../timeseries-output5.json", function (json) {
                     var times = json.map(function(json) {
                         return json.timestamp;
                         
