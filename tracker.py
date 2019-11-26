@@ -218,8 +218,11 @@ def main(unused_argv):
   print('finished running tftf-sep28-2018-multivariate-tensorflow-timeseries-forecasting.py')
   numpy.savetxt('timeseries-output.csv', past_and_future_values, delimiter=",")
   p_a_f_df=pd.DataFrame(past_and_future_values)
+  p_a_f_df5 = p_a_f_df.iloc[[i for i in range(0,p_a_f_df.shape[0],5)]]
   p_a_f_df.columns=['cpu','ram','disk','network']
+  p_a_f_df5.columns = ['cpu','ram','disk','network']
   p_a_f_df.to_json('timeseries-output.json',orient='records')
+  p_a_f_df5.to_json('timeseries-output5.json',orient='records')
   print('done writing output to timeseries-output.csv')
 
 if __name__ == "__main__":
