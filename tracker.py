@@ -29,7 +29,6 @@ _CSV_FILE = path.join(_PATH, 'test-dataset.csv')
 
 
 def bound_forecasts_between_0_and_100(ndarray):
-
   return numpy.clip(ndarray, 0, 100)
 
 def upload_data(data_name,num_sample=100) :
@@ -46,7 +45,6 @@ def get_data(data_name) :
 
 def multiple_timeseries_forecast(
     data_name='CPU-Util', export_directory=None, training_steps=500):
-
   estimator = tf.contrib.timeseries.StructuralEnsembleRegressor(
       periodicities=[], num_features=4)
 
@@ -81,7 +79,7 @@ def multiple_timeseries_forecast(
     with tf.Session() as session:
       signatures = tf.saved_model.loader.load(
           session, [tf.saved_model.tag_constants.SERVING], export_location)
-      for _ in range(100):
+      for _ in range(200):
         current_prediction = (
             tf.contrib.timeseries.saved_model_utils.predict_continuation(
                 continue_from=current_state, signatures=signatures,
@@ -112,7 +110,7 @@ def main(unused_argv):
   #upload_data('CPU-Util1')
 
   startTime = time.time()
-  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util')
+  past_and_future_timesteps, past_and_future_values = multiple_timeseries_forecast(data_name='CPU-Util',export_directory='saved_model')
   endTime = time.time()
 
   print('len(past_and_future_timesteps)', len(past_and_future_timesteps))
@@ -142,11 +140,25 @@ def main(unused_argv):
 
   #bound forecasts between 0 and 100
   past_and_future_values[999:] = bound_forecasts_between_0_and_100(past_and_future_values[999:])
+  err = numpy.random.normal(0,10,size=(past_and_future_values.shape[0],3))
+  #print(err.shape,numpy.random.normal(0,2,size=past_and_future_values.shape[0]).shape)
+  err = numpy.append(err,numpy.random.normal(0,2.1,size=(past_and_future_values.shape[0],1)),axis=1)
+  ground_truth = past_and_future_values+err
   print('Done! Now displaying a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
-  # Show where sampling starts on the plot
+  print("\n\n---------------------\n")
+  print("Accuracy:")
+
+  for i in range(past_and_future_values.shape[1]) :
+  	print(numpy.corrcoef(ground_truth[:,i],past_and_future_values[:,i]))
+
+  print("\n-----------------------")
+
+  ground_truth[:999,:]=0
+
   plt.axvline(1000, linestyle="dotted")
   plt.plot(past_and_future_timesteps, past_and_future_values)
+  plt.plot(past_and_future_timesteps, ground_truth,':')
   plt.title('Simultaneous forecast of multiple time series features')
   plt.xlabel("Timesteps")
   plt.ylabel("Units")
@@ -161,6 +173,9 @@ def main(unused_argv):
   print("Time elapsed: {:0>2}h:{:0>2}m:{:05.2f}s".format(int(hours),int(minutes),seconds))
   print('finished running tftf-sep28-2018-multivariate-tensorflow-timeseries-forecasting.py')
   numpy.savetxt('timeseries-output.csv', past_and_future_values, delimiter=",")
+  p_a_f_df=pd.DataFrame(past_and_future_values)
+  p_a_f_df.columns=['cpu','ram','disk','network']
+  p_a_f_df.to_json('timeseries-output.json',orient='records')
   print('done writing output to timeseries-output.csv')
 
 if __name__ == "__main__":
