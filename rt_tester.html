@@ -1,44 +1,56 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript">
-window.onload = function() {
-	var dataPoints = [];
-	var chart;
-	$.getJSON("dynamic_data.json", function(data) {  
-		$.each(data, function(key, value){
-			dataPoints.push({x: data.timestamp, y: data.cpu});
+<script>
+window.onload = function () {
+
+var dps = []; // dataPoints
+var chart = new CanvasJS.Chart("chartContainer", {
+	title :{
+		text: "Dynamic Data"
+	},
+	axisY: {
+		includeZero: false
+	},      
+	data: [{
+		type: "line",
+		dataPoints: dps
+	}]
+});
+
+var xVal = 0;
+var yVal = 100; 
+var updateInterval = 1000;
+var dataLength = 20; // number of dataPoints visible at any point
+
+var updateChart = function (count) {
+
+	count = count || 1;
+
+	for (var j = 0; j < count; j++) {
+		yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+		dps.push({
+			x: xVal,
+			y: yVal
 		});
-		chart = new CanvasJS.Chart("chartContainer",{
-			title:{
-				text:"Live Chart with dataPoints from External JSON"
-			},
-			data: [{
-				type: "line",
-				dataPoints : dataPoints,
-			}]
-		});
-		chart.render();
-		// updateChart();
-	});
-	function updateChart() {
-	$.getJSON("dynamic_data.json" + (dataPoints.length + 1) + "&ystart=" + (dataPoints[dataPoints.length - 1].y) + "&length=1&type=json", function(data) {
-		$.each(data, function(key, value) {
-			dataPoints.push({
-			x: parseInt(value[0]),
-			y: parseInt(value[1])
-			});
-		});
-		chart.render();
-		setTimeout(function(){updateChart()}, 1000);
-	});
+		xVal++;
 	}
+
+	if (dps.length > dataLength) {
+		dps.shift();
+	}
+
+	chart.render();
+};
+
+updateChart(dataLength);
+setInterval(function(){updateChart()}, updateInterval);
+
 }
 </script>
-<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
 <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>
