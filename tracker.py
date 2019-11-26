@@ -8,6 +8,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 import numpy
 import time
+import subprocess
 from os import path
 import tempfile
 #import tensorflow.compat.v1 as tf
@@ -167,8 +168,8 @@ def main(unused_argv):
   print("\n-----------------------")
 
   ground_truth[:999,:]=0
-
-  plt.axvline(1000, linestyle="dotted")
+  p = subprocess.Popen(["open","http://127.0.0.1:8887/templates/home.html"])
+  """plt.axvline(1000, linestyle="dotted")
   plt.plot(past_and_future_timesteps, past_and_future_values)
   plt.plot(past_and_future_timesteps, ground_truth,':')
   plt.title('Simultaneous forecast of multiple time series features')
@@ -176,7 +177,7 @@ def main(unused_argv):
   plt.ylabel("Units")
   #handles, labels = ax.get_legend_handles_labels()
   #ax.legend(handles, labels)
-  plt.show()
+  plt.show()"""
 
   # plt.axvline(1000, linestyle="dotted")
   # plt.plot(past_and_future_timesteps, past_and_future_values[:,1])
