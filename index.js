@@ -9,12 +9,12 @@ app.get('/', function(req, res) {
 	console.log("time is " + Date.now());
 });
 
-app.get('/predicted', function(req,res) {
+app.get('/predicted.html', function(req,res) {
   res.sendFile(__dirname+"/templates/predicted.html");
 	console.log("time is " + Date.now());
 });
-app.get('/realtime', function(req,res) {
-  res.sendFile(__dirname+"/templates/rt_tester.html");
+app.get('/realtime.html', function(req,res) {
+  res.sendFile(__dirname+"/templates/chart.html");
 });
 
 
