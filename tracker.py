@@ -147,10 +147,22 @@ def main(unused_argv):
   print('Done! Now displaying a visualization of 1000 past timesteps, and 100 future timesteps with forecast values for multiple features.')
 
   print("\n\n---------------------\n")
-  print("Accuracy:")
+  print("Correlation Coefficient:")
 
-  for i in range(past_and_future_values.shape[1]) :
-  	print(numpy.corrcoef(ground_truth[:,i],past_and_future_values[:,i]))
+  print("CPU: ",numpy.corrcoef(ground_truth[:,0],past_and_future_values[:,0])[0][1])
+  print("RAM: ",numpy.corrcoef(ground_truth[:,1],past_and_future_values[:,1])[0][1])
+  print("Disk: ",numpy.corrcoef(ground_truth[:,2],past_and_future_values[:,2])[0][1])
+  print("Network: ",numpy.corrcoef(ground_truth[:,3],past_and_future_values[:,3])[0][1])
+
+  print("\n-----------------------")
+
+  print("\n\n---------------------\n")
+  print("RMSE:")
+
+  print("CPU: ",numpy.sqrt((ground_truth[:,0]-past_and_future_values[:,0])**2).mean())
+  print("RAM: ",numpy.sqrt((ground_truth[:,1]-past_and_future_values[:,1])**2).mean())
+  print("Disk: ",numpy.sqrt((ground_truth[:,2]-past_and_future_values[:,2])**2).mean())
+  print("Network: ",numpy.sqrt((ground_truth[:,3]-past_and_future_values[:,3])**2).mean())
 
   print("\n-----------------------")
 
@@ -165,6 +177,38 @@ def main(unused_argv):
   #handles, labels = ax.get_legend_handles_labels()
   #ax.legend(handles, labels)
   plt.show()
+
+  # plt.axvline(1000, linestyle="dotted")
+  # plt.plot(past_and_future_timesteps, past_and_future_values[:,1])
+  # plt.plot(past_and_future_timesteps, ground_truth[:,1],':')
+  # plt.title('Simultaneous forecast of multiple time series features')
+  # plt.xlabel("Timesteps")
+  # plt.ylabel("Units")
+  # #handles, labels = ax.get_legend_handles_labels()
+  # #ax.legend(handles, labels)
+  # plt.show()
+
+  # plt.axvline(1000, linestyle="dotted")
+  # plt.plot(past_and_future_timesteps, past_and_future_values[:,2])
+  # plt.plot(past_and_future_timesteps, ground_truth[:,2],':')
+  # plt.title('Simultaneous forecast of multiple time series features')
+  # plt.xlabel("Timesteps")
+  # plt.ylabel("Units")
+  # #handles, labels = ax.get_legend_handles_labels()
+  # #ax.legend(handles, labels)
+  # plt.show()
+
+  # plt.axvline(1000, linestyle="dotted")
+  # plt.plot(past_and_future_timesteps, past_and_future_values[:,3])
+  # plt.plot(past_and_future_timesteps, ground_truth[:,3],':')
+  # plt.title('Simultaneous forecast of multiple time series features')
+  # plt.xlabel("Timesteps")
+  # plt.ylabel("Units")
+  # #handles, labels = ax.get_legend_handles_labels()
+  # #ax.legend(handles, labels)
+  # plt.show()
+
+
   activate(past_and_future_values[900:,0])
 
   #print elapsed time in hh:mm:ss format
